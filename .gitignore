@@ -1,0 +1,11 @@
+env
+.env
+env/
+XPINC_NOTA_NEGOCIACAO_B3_4_2023.pdf
+NotaCorretagem_31-08-23_31-08-23.pdf
+NotaCorretagem_01-08-23_31-08-23.pdf
+ler_nota.py
+ler_nota2.PY
+ler_pdf.py
+teste_all_notas.py
+notas_corretagem_genial.xlsx
