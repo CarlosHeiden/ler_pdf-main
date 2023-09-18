@@ -81,10 +81,10 @@ try:
         nota_fiscal_regex = r"\sWDO\s"
         nota_fiscal = "C WDO "
         match = re.search(nota_fiscal_regex, nota_fiscal)
-        if match:
-            print("A condiçao foi encontrada!")
-        else:
-            print("A condiçao não foi encontrada.")
+        #if match:
+        #    print("A condiçao foi encontrada!")
+        #else:
+        #    print("A condiçao não foi encontrada.")
 
         
         operations = list(df[df['Unnamed: 0'].str.contains(nota_fiscal_regex,na=False)].index)
@@ -100,10 +100,10 @@ try:
         nota_fiscal_regex = r"\sWDO\s"
         nota_fiscal = "C WDO "
         match = re.search(nota_fiscal_regex, nota_fiscal)
-        if match:
-            print("A nota fiscal foi encontrada!")
-        else:
-            print("A nota fiscal não foi encontrada.")
+        #if match:
+         #   print("A nota fiscal foi encontrada!")
+        #else:
+        #    print("A nota fiscal não foi encontrada.")
 
         precos = list(df[df['Unnamed: 0'].str.contains(nota_fiscal_regex,na=False)].index)
         resultado = 0.0
@@ -132,11 +132,17 @@ try:
         total_contratos_mes = notas_df['Qtd_Contratos'].sum()
         total_mes = notas_df['Valor_nf'].sum()
         despesas_mes = notas_df['Total_despesas'].sum()
+        dias_positivos = len(notas_df[notas_df['Valor_nf']>0])
+        dias_negativos = len(notas_df[notas_df['Valor_nf']<0])
+        percentual_positivos = (dias_positivos / (dias_positivos + dias_negativos)) * 100
        
     print(notas_df)
     print(f'Quantidade total de contratos mes = {total_contratos_mes}')
     print(f'Custo por operacao deste mes = R$ {despesas_mes/total_contratos_mes}')
-    print(f'Valor total das notas = R$ {total_mes}')
+    print(f'A  soma do valor total das notas deste mes = R$ {total_mes}')
+    print(f"Percentual de dias positivos: {percentual_positivos:.2f}%")
+    print(f'Quantidade de dias positivos = {dias_positivos}')
+    print(f'Quantidade de dias negativos = {dias_negativos}')
 
     #cria arquivo excel com valores de notas_df
     notas_df.to_excel('notas_corretagem_genial.xlsx', index=False)
