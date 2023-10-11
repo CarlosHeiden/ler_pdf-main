@@ -1,10 +1,11 @@
 import tabula
+import re
+import datetime
 from tabula.io import read_pdf
 import pandas  as pd
 from IPython.display import display
-import re
 
-filename = r"NotaCorretagem_01-08-23_31-08-23.pdf"
+filename = input('Digite o caminho para arquivo PDF: ')
 
 try:
     #ler arquivo pdf e cria DataFrame
@@ -131,23 +132,40 @@ try:
         notas_df.loc[next_index] = dados_nf
         total_contratos_mes = notas_df['Qtd_Contratos'].sum()
         total_mes = notas_df['Valor_nf'].sum()
+        irpf_mes = total_mes * 0.20
         despesas_mes = notas_df['Total_despesas'].sum()
         dias_positivos = len(notas_df[notas_df['Valor_nf']>0])
         dias_negativos = len(notas_df[notas_df['Valor_nf']<0])
         percentual_positivos = (dias_positivos / (dias_positivos + dias_negativos)) * 100
+
+    
        
     print(notas_df)
-    print(f'Quantidade total de contratos mes = {total_contratos_mes}')
-    print(f'Custo por operacao deste mes = R$ {despesas_mes/total_contratos_mes}')
-    print(f'A  soma do valor total das notas deste mes = R$ {total_mes}')
+    print('='*50)
+    print('\n**Resumo das operacoes**\n')
+    print(f'Quantidade total de contratos = {total_contratos_mes}')
+    print(f'Custo por operacao deste = R$ {despesas_mes/total_contratos_mes}')
     print(f"Percentual de dias positivos: {percentual_positivos:.2f}%")
     print(f'Quantidade de dias positivos = {dias_positivos}')
-    print(f'Quantidade de dias negativos = {dias_negativos}')
+    print(f'Quantidade de dias negativos = {dias_negativos}\n')
+    print(f'A soma do valor total das notas deste = R$ {total_mes}')
+    
+    
+    #calcula irpf  no caso de lucro
+    if irpf_mes >0:
+        print(f'\nO IRPF a ser pago neste mês é de :R$ {irpf_mes:.2f} ')
+    else:
+        print(f'Resultado do mes negativo, isento pgto IRPF')
 
-    #cria arquivo excel com valores de notas_df
-    notas_df.to_excel('notas_corretagem_genial.xlsx', index=False)
 
- 
+    # salva-o  dataframe como um arquivo do Excel ,inserindo ano e mes ao nome do arquivo
+    
+    dia, mes, ano = data_pregao.split('/')
+    caminho = input('Digite o caminho para salvar arquivo excel com os dados do pdf: ')
+    path_salve = f'{caminho}/notas_corretagem_{ano}_{mes}.xlsx'
+    notas_df.to_excel(path_salve, index=False)
+
+
 
 except Exception as e:
     print("Ocorreu um erro:", str(e))
